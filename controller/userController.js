@@ -2,6 +2,36 @@ const bcrypt = require('bcryptjs');
 const { User } = require('../models/user');  // Path to the schema file
 const mongoose = require('mongoose');
 // Create a new employee
+
+// Update User Role
+async function toggleUserRole(req, res) {
+    try {
+        const { id, role } = req.body;
+
+        // Validate input
+        if (!id || !role) {
+            return res.status(400).json({ message: 'User ID and role are required' });
+        }
+
+        if (!['ADMIN', 'MANAGER', 'STAFF', 'CUSTOMER'].includes(role)) {
+            return res.status(400).json({ message: 'Invalid role provided' });
+        }
+
+        // Find and update user role
+        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User role updated successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+}
+
+
 async function createEmployee(req, res) {
     try {
         const { username, email, password, firstName, lastName, role, permissions, contact, dietaryPreferences } = req.body;
@@ -144,9 +174,42 @@ async function getEmployeeByUsername(req, res) {
     }
 }
 
+// Toggle User Permissions
+async function toggleUserPermissions(req, res) {
+    try {
+        const { id, permissions } = req.body;
 
+        // Validate input
+        if (!id || !Array.isArray(permissions)) {
+            return res.status(400).json({ message: 'User ID and permissions are required' });
+        }
+
+        const validPermissions = [
+            'VIEW_MENU', 'EDIT_MENU', 'MANAGE_ORDERS',
+            'VIEW_REPORTS', 'MANAGE_USERS', 'MANAGE_TABLES'
+        ];
+
+        // Check if all provided permissions are valid
+        if (permissions.some(p => !validPermissions.includes(p))) {
+            return res.status(400).json({ message: 'Invalid permissions provided' });
+        }
+
+        // Update user's permissions
+        const user = await User.findByIdAndUpdate(id, { permissions }, { new: true });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User permissions updated successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+}
 module.exports = {
     createEmployee,
     updateEmployee,
-    deleteEmployee,getAllEmployees,getEmployeeByUsername
+    deleteEmployee,getAllEmployees,getEmployeeByUsername,
+    toggleUserRole,toggleUserPermissions
 };

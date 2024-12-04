@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();  //
+const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
-
 const user=require("./models/user")
 const table=require("./models/table")
 const reservation=require("./models/reservation")
@@ -13,6 +13,8 @@ const feedback=require("./models/feedback")
 
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
+
+app.use(cors());
 
 app.use('/admin', userRoutes);
 const PORT = 3000;

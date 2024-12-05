@@ -10,13 +10,19 @@ const order=require("./models/order")
 const menuitem=require("./models/menuitem")
 const inventory=require("./models/inventory")
 const feedback=require("./models/feedback")
-
+ const muRoutes=require("./routes/menuRoutes")
+ const orderRoutes=require("./routes/orderRoutes")
+ const temp=require("./controller/tempController")
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 
 app.use(cors());
 
 app.use('/admin', userRoutes);
+app.use('/menu', muRoutes);
+app.use('/order', orderRoutes);
+
+app.post('/feedback',temp.postFeedback);
 const PORT = 3000;
 // Connect to MongoDB using the URL from .env
 const uri = process.env.uri;

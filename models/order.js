@@ -57,3 +57,7 @@ const OrderSchema = new mongoose.Schema({
     },
     completedAt: Date
 });
+// Export the model
+const Order = mongoose.model('Order', OrderSchema);
+
+module.exports = Order;

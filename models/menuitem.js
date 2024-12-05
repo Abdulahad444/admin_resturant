@@ -48,3 +48,4 @@ const MenuItemSchema = new mongoose.Schema({
     }
 });
 
+module.exports = mongoose.model('MenuItem', MenuItemSchema);

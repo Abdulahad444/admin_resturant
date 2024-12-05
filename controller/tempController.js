@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const Feedback = require('../models/feedback');  // Assuming Feedback model is in models/Feedback.js
 const Order = require('../models/order');        // Assuming Order model is in models/Order.js
 const User = require('../models/order');          // Assuming User model is in models/User.js
+const Reservation=require('../models/reservation')
+const Table=require('../models/table')
 exports.postFeedback = async (req, res) => {
     try {
         const { orderId, customerId, rating, comment, menuItemRatings } = req.body;
@@ -54,5 +56,33 @@ exports.postFeedback = async (req, res) => {
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: error.message });
+    }
+};
+
+
+exports.createReservation = async (req, res) => {
+    const { customer, assignedto, table, date, time, partySize, specialRequests } = req.body;
+
+    // Check if all required fields are provided
+    if (!customer || !assignedto || !table || !date || !time || !partySize) {
+        return res.status(400).json({ message: 'All fields except specialRequests are required.' });
+    }
+
+    try {
+        // Check if the table is already reserved
+        const existingReservation = await Reservation.findOne({ table, date, time });
+        if (existingReservation) {
+            return res.status(400).json({ message: 'Table is already reserved for the selected date and time.' });
+        }
+
+        const newReservation = new Reservation({ customer, assignedto, table, date, time, partySize, specialRequests });
+        await newReservation.save();
+
+        // Update table status to RESERVED
+        await Table.findByIdAndUpdate(table, { status: 'RESERVED', reservedBy: customer, reservationTime: date });
+
+        res.status(201).json({ message: 'Reservation created successfully.', reservation: newReservation });
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating reservation.', error: error.message });
     }
 };

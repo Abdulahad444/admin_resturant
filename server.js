@@ -13,6 +13,7 @@ const feedback=require("./models/feedback")
  const muRoutes=require("./routes/menuRoutes")
  const orderRoutes=require("./routes/orderRoutes")
  const temp=require("./controller/tempController")
+const reserv=require("./routes/tableRoutes")
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 
@@ -21,6 +22,10 @@ app.use(cors());
 app.use('/admin', userRoutes);
 app.use('/menu', muRoutes);
 app.use('/order', orderRoutes);
+
+app.use('/table', reserv);
+
+app.use('/reserv/add',temp.createReservation)
 
 app.post('/feedback',temp.postFeedback);
 const PORT = 3000;

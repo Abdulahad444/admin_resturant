@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const TableSchema = new mongoose.Schema({
     tableNumber: {
         type: String,
@@ -26,3 +27,7 @@ const TableSchema = new mongoose.Schema({
         enum: ['MAIN_HALL', 'OUTDOOR', 'PRIVATE_ROOM']
     }
 });
+
+const Table = mongoose.model('Table', TableSchema);
+
+module.exports = Table;

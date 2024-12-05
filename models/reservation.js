@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
+
 const ReservationSchema = new mongoose.Schema({
     customer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    assignedto: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -31,3 +37,8 @@ const ReservationSchema = new mongoose.Schema({
     },
     specialRequests: String
 });
+
+// Create the Reservation model
+const Reservation = mongoose.model('Reservation', ReservationSchema);
+
+module.exports = Reservation;

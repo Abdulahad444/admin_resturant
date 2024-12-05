@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const FeedbackSchema = new mongoose.Schema({
     order: {
         type: mongoose.Schema.Types.ObjectId,
@@ -31,9 +32,21 @@ const FeedbackSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    suggestion: String,
+    response: String,
+
+    // New fields added
+    implementationStatus: {
+        type: String,
+        enum: ['done', 'notdone'], // Only allow these values
+        default: 'notdone' // Default to 'notdone' if no status is set
+    },
+    implementationComment: {
+        type: String,
+        default: '' // Default is an empty string if not provided
     }
 });
-
 
 const Feedback = mongoose.model('Feedback', FeedbackSchema);
 

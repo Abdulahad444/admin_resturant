@@ -7,13 +7,13 @@ const user=require("./models/user")
 const table=require("./models/table")
 const reservation=require("./models/reservation")
 const order=require("./models/order")
-const menuitem=require("./models/menuitem")
 const inventory=require("./models/inventory")
 const feedback=require("./models/feedback")
  const muRoutes=require("./routes/menuRoutes")
  const orderRoutes=require("./routes/orderRoutes")
  const temp=require("./controller/tempController")
 const reserv=require("./routes/tableRoutes")
+const feedbackRoute=require("./routes/feedbackRoutes")
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 
@@ -23,11 +23,13 @@ app.use('/admin', userRoutes);
 app.use('/menu', muRoutes);
 app.use('/order', orderRoutes);
 
-app.use('/table', reserv);
+app.use('/reservation', reserv);
+
 
 app.use('/reserv/add',temp.createReservation)
 
-app.post('/feedback',temp.postFeedback);
+
+app.use('/feedback',feedbackRoute)
 const PORT = 3000;
 // Connect to MongoDB using the URL from .env
 const uri = process.env.uri;

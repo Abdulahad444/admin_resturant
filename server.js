@@ -14,6 +14,7 @@ const feedback=require("./models/feedback")
 const reserv=require("./routes/tableRoutes")
 const feedbackRoute=require("./routes/feedbackRoutes")
 const notificationRoutes=require("./routes/notificationRoutes")
+const notificationController=require("./controller/notificationController")
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 
@@ -40,7 +41,9 @@ mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('MongoDB connected'))
+.then(() => {console.log('MongoDB connected')
+  notificationController.startTrigger();
+})
 .catch(err => console.error('MongoDB connection error:', err));
 
 

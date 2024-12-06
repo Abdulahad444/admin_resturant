@@ -1,6 +1,6 @@
 const Order = require('../models/order');
 const MenuItem = require('../models/menuitem');
-const  User  = require('../models/user'); // Assuming there's a User model for employee performance
+const { User } = require('../models/user'); // Assuming there's a User model for employee performance
 const mongoose = require('mongoose');
 const feedback=require('../models/feedback')
 // Create Order

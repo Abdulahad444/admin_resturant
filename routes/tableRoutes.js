@@ -9,7 +9,7 @@ router.put('/', tableController.updateTable);
 
 
 router.get('/reservation', tableController.viewReservations);  // View all reservations
-router.delete('/reservation', tableController.deleteReservation);  // Delete reservation by ID in body
+router.delete('/', tableController.deleteReservation);  // Delete reservation by ID in body
 
 // Check table availability
 router.get('/checkAvailability', tableController.checkTableAvailability);  // Check table availability

@@ -15,15 +15,19 @@
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "brevo": "^1.0.0",
+    "child": "^0.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
+    "https": "^1.0.0",
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.3",
     "nodemon": "^3.1.7",
+    "process": "^0.11.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.2",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "systeminformation": "^5.23.5"
   }
 }

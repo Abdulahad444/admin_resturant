@@ -15,6 +15,8 @@ const reserv=require("./routes/tableRoutes")
 const feedbackRoute=require("./routes/feedbackRoutes")
 const notificationRoutes=require("./routes/notificationRoutes")
 const notificationController=require("./controller/notificationController")
+const paymentMethodRoutes=require("./routes/paymentRoutes")
+const performaceRoutes=require("./routes/performanceRoutes")
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 
@@ -23,7 +25,7 @@ app.use(cors());
 app.use('/admin', userRoutes);
 app.use('/menu', muRoutes);
 app.use('/order', orderRoutes);
-
+app.use('/payment',paymentMethodRoutes)
 app.use('/reservation', reserv);
 
 
@@ -33,6 +35,8 @@ app.use('/invent/add',temp.addInventory)
 app.use('/notification',notificationRoutes)
 
 app.use('/feedback',feedbackRoute)
+
+app.use('/performace',performaceRoutes)
 const PORT = 3000;
 // Connect to MongoDB using the URL from .env
 const uri = process.env.uri;
@@ -47,6 +51,7 @@ mongoose.connect(uri, {
 .catch(err => console.error('MongoDB connection error:', err));
 
 
+app.use('/api/payment-methods',paymentMethodRoutes); // Set up the payment method routes
 
 app.listen(PORT, (error) =>{
     if(!error)

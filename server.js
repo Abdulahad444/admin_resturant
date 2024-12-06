@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 require('dotenv').config();  //
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
-const user=require("./models/user")
 const table=require("./models/table")
 const reservation=require("./models/reservation")
 const order=require("./models/order")
@@ -14,6 +13,7 @@ const feedback=require("./models/feedback")
  const temp=require("./controller/tempController")
 const reserv=require("./routes/tableRoutes")
 const feedbackRoute=require("./routes/feedbackRoutes")
+const notificationRoutes=require("./routes/notificationRoutes")
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 
@@ -27,7 +27,9 @@ app.use('/reservation', reserv);
 
 
 app.use('/reserv/add',temp.createReservation)
+app.use('/invent/add',temp.addInventory)
 
+app.use('/notification',notificationRoutes)
 
 app.use('/feedback',feedbackRoute)
 const PORT = 3000;

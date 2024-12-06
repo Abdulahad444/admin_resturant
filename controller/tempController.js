@@ -4,6 +4,9 @@ const Order = require('../models/order');        // Assuming Order model is in m
 const User = require('../models/order');          // Assuming User model is in models/User.js
 const Reservation=require('../models/reservation')
 const Table=require('../models/table')
+const Inventory=require('../models/inventory')
+
+
 exports.postFeedback = async (req, res) => {
     try {
         const { orderId, customerId, rating, comment, menuItemRatings } = req.body;
@@ -84,5 +87,55 @@ exports.createReservation = async (req, res) => {
         res.status(201).json({ message: 'Reservation created successfully.', reservation: newReservation });
     } catch (error) {
         res.status(500).json({ message: 'Error creating reservation.', error: error.message });
+    }
+};
+
+
+exports.addInventory = async (req, res) => {
+    const { ingredient, quantity, unit, lowStockThreshold, lastRestocked, restockedBy } = req.body;
+
+    try {
+        // Validate required fields
+        if (!ingredient || quantity === undefined || !unit || !lowStockThreshold) {
+            return res.status(400).json({
+                message: 'Missing required fields. Please provide ingredient, quantity, unit, and lowStockThreshold.'
+            });
+        }
+
+        // Validate the unit field against the allowed enum values
+        const validUnits = ['KG', 'GRAM', 'LITER', 'ML', 'PIECE'];
+        if (!validUnits.includes(unit)) {
+            return res.status(400).json({ message: `Invalid unit. Allowed values are: ${validUnits.join(', ')}` });
+        }
+
+        // Check if the ingredient already exists
+        const existingInventory = await Inventory.findOne({ ingredient: ingredient.trim() });
+        if (existingInventory) {
+            return res.status(409).json({ message: 'Ingredient already exists in inventory.' });
+        }
+
+        // Create a new inventory item
+        const newInventory = new Inventory({
+            ingredient: ingredient.trim(),
+            quantity,
+            unit,
+            lowStockThreshold,
+            lastRestocked: lastRestocked || null,
+            restockedBy: mongoose.Types.ObjectId.isValid(restockedBy) ? restockedBy : null
+        });
+
+        // Save the new inventory item
+        await newInventory.save();
+
+        res.status(201).json({
+            message: 'Inventory item added successfully.',
+            inventory: newInventory
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'Error adding inventory item.',
+            error: error.message
+        });
     }
 };

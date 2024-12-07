@@ -94,3 +94,37 @@ exports.deleteMenuItem = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+exports.getAllMenuItems = async (req, res) => {
+    try {
+        const menuItems = await MenuItem.find().populate('createdBy', 'name email'); // Populate 'createdBy' with 'name' and 'email'
+        res.status(200).json({
+            success: true,
+            data: menuItems
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Failed to fetch menu items',
+            error: error.message
+        });
+    }
+};
+// Get all menu items
+exports.getAllMenuItems = async (req, res) => {
+    try {
+        // Fetch all menu items
+        const menuItems = await MenuItem.find();
+
+        // If no menu items are found
+        if (menuItems.length === 0) {
+            return res.status(404).json({ message: 'No menu items found' });
+        }
+
+        // Send the found menu items in the response
+        res.status(200).json(menuItems);
+    } catch (err) {
+        // Error handling
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

@@ -6,9 +6,11 @@ import Feedback  from './components/feedbackComponent';
 import Menu from './components/menuComponent'
 import PaymentManagement from './components/paymentComponent';
 import './index.css';
+import Ai from "./components/aiComponent"
+import Res from "./components/reservation"
 const App = () => {
   return (
-<PaymentManagement />
+<PaymentManagement/>
   );
 };
 

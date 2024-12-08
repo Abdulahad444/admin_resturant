@@ -331,7 +331,7 @@ const fetchTransactionHistory = async (userId) => {
           }
 
           .form-input {
-            width: 100%;
+            width: 95%;
             padding: 10px;
             border: 1px solid #374151;
             background-color: #1f2937;

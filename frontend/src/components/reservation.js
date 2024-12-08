@@ -291,7 +291,7 @@ const RestaurantDashboard = () => {
     width: 100%;
     max-width: 1000px;
     max-height: 120vh;
-    background: rgba(255, 255, 255, 0.03);
+ background-color: #111827;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow: hidden;

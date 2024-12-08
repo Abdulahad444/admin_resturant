@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-
+import Navbar from './navBar';
 const GEMINI_API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
 const GEMINI_API_KEY = 'AIzaSyDytJrjHa71tbEM7DkldgYf_clQSV72BbU';
 

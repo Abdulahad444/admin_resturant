@@ -92,8 +92,13 @@ export default function NotificationManagement() {
     <>
       <style>
   {`
+  html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
   .card {
-  background-color: #1f2937;
+  background: #121721;
   padding: 24px;
   border-radius: 8px;
   border: 1px solid #374151;
@@ -203,14 +208,22 @@ export default function NotificationManagement() {
 }
     .notification-container {
       min-height: 100vh;
-      background-color: #111827;
+      background: #121721;
       padding: 32px;
       color: #ffffff;
     }
 
     .notification-header {
-      margin-bottom: 32px;
-      text-align: center;
+       text-align: center;
+              font-size: 42px;
+            color: #cbd5e0;
+            margin-bottom: 30px;
+              font-weight: 800;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+
+            
     }
 
     .notification-title {

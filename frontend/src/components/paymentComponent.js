@@ -199,28 +199,40 @@ const fetchTransactionHistory = async (userId) => {
 
           .payment-container {
             min-height: 100vh;
-            background-color: #111827;
+           background: #121721;
             padding: 32px;
             color: #ffffff;
           }
-
+  html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
           .dashboard-header {
-            background: #111827;
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+             background: #121721;
+            padding-top: 2rem;
             backdrop-filter: blur(8px);
-            margin-bottom: 0.5rem;
           }
 
           .dashboard-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: #ff4757;
+            color: #cbd5e0;
             text-transform: uppercase;
             letter-spacing: 2px;
             text-align: center;
             text-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
             margin: 0;
+              &::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, #ff4757, transparent);
+  }
           }
 
           .alert {
@@ -237,7 +249,7 @@ const fetchTransactionHistory = async (userId) => {
           .alert.error { background-color: rgba(153, 27, 27, 0.5); }
 
           .user-selection-container {
-            background: rgba(55, 65, 81, 0.3);
+                background-color: #1f2937;
             padding: 1.5rem;
             border-radius: 12px;
             margin-bottom: 2rem;
@@ -368,6 +380,7 @@ const fetchTransactionHistory = async (userId) => {
           .table-container {
             overflow-x: auto;
             margin-top: 24px;
+              background-color: #1f2937;
           }
 
           .table {

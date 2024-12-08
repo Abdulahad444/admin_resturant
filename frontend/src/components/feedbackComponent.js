@@ -135,6 +135,11 @@ export default function FeedbackManagement() {
     <>
       <style>
         {`
+        html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
         // Add these styles to your existing styles
 .dashboard-header {
   text-align: center;
@@ -161,7 +166,7 @@ export default function FeedbackManagement() {
 }
           .feedback-container {
             min-height: 100vh;
-            background-color: #111827;
+                 background: #121721;
             padding: 32px;
             color: #ffffff;
           }

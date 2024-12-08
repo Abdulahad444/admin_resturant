@@ -128,7 +128,8 @@ const PerformanceReport = () => {
 
 export default PerformanceReport;
 
-// Styled Components with Enhanced Aesthetics
+// Styled Components with Fixed Background Color
+
 const GradientOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -142,8 +143,7 @@ const GradientOverlay = styled.div`
 
 const PerformanceReportContainer = styled.div`
   position: relative;
-  background: #121721;
-  color: #e2e8f0;
+  background: #121721; /* Ensure background is dark */
   min-height: 100vh;
   padding: 40px 20px;
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -153,7 +153,7 @@ const PerformanceReportContainer = styled.div`
 const PerformanceHeading = styled.h1`
   text-align: center;
   font-size: 48px;
-  color: #ff4757;
+    color: #cbd5e0;
   text-transform: uppercase;
   font-weight: 800;
   margin-bottom: 50px;
@@ -209,12 +209,12 @@ const Card = styled.div`
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   transition: all 0.4s ease;
   text-align: center;
-  cursor: pointer; // Changed from conditional cursor
+  cursor: pointer; 
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 
   &:hover {
-    transform: scale(1.05); // Apply scale to both performance and status cards
+    transform: scale(1.05);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     background-color: ${props => props.$variant === 'performance' 
       ? 'rgba(44, 62, 80, 0.8)' 
@@ -274,7 +274,7 @@ const LoadingMessage = styled.div`
   height: 100vh;
   color: #ff4757;
   font-size: 24px;
-  background: #121721;
+  background: #121721; /* Ensure background is dark */
 `;
 
 const ErrorMessage = styled.div`

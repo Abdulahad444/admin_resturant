@@ -198,23 +198,28 @@ export default function MenuManagement() {
     <>
       <style>
         {`
+        html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
          .menu-container {
   min-height: 100vh;
-  background-color: #111827;
+ background: #121721;
   padding: 32px;
   color: #ffffff;
 }
 
 .dashboard-header {
-  background: #111827;
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 71, 87, 0.2);
+ background: #121721;
+  padding: 2rem;
+  
   backdrop-filter: blur(8px);
 }
 .dashboard-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #ff4757;
+    color: #e2e8f0;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;

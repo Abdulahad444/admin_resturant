@@ -6,7 +6,7 @@ import Feedback  from './components/feedbackComponent';
 import './index.css';
 const App = () => {
   return (
-<Feedback/>
+<Notification/>
   );
 };
 

@@ -209,7 +209,7 @@ const fetchTransactionHistory = async (userId) => {
             padding: 1.5rem;
             border-bottom: 1px solid rgba(255, 71, 87, 0.2);
             backdrop-filter: blur(8px);
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
           }
 
           .dashboard-title {

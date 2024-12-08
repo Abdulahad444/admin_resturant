@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // Add a new menu item
 exports.addMenuItem = async (req, res) => {
     try {
+        console.log(req.body);
         const {
             name, description, price, category, createdBy, ingredients,
             nutritionalInfo, allergens, availability, imageUrl, preparationTime

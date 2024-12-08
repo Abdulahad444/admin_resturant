@@ -27,7 +27,7 @@ const Navbar = () => {
           </NavbarBrand>
           <NavbarLinks>
             {/* Replace <a> tags with <Link> for React Router */}
-            {[ 'reservation','feedback', 'performance', 'notification', , 'chatbot','payment-management', 'menu'].map((link, index) => (
+            {[ 'reservation','feedback', 'performance', ,'user','notification', , 'chatbot','payment-management', 'menu'].map((link, index) => (
               <NavbarLink 
                 key={link} 
                 to={`/${link.toLowerCase()}`}  // Use React Router's "to" prop for navigation

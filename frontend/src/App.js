@@ -9,15 +9,16 @@ import './index.css';
 import Ai from "./components/aiComponent";
 import Res from "./components/reservation";
 import Nav from './components/navBar';
-
+import { EmployeeDashboard } from './components/userComponent';
 const App = () => {
   return (
+    
+   <div>
     <Router>
       {/* Navbar will be displayed on all pages */}
       <Nav />
-
       {/* Define Routes for the pages */}
-      <Routes>
+     <Routes>
         {/* Correcting the path */}
         <Route path="/Feedback" element={<Feedback />} />
         <Route path="/performance" element={<Performance />} />
@@ -26,9 +27,11 @@ const App = () => {
         <Route path="/menu" element={<Menu />} />
         <Route path="/chatbot" element={<Ai />} />
         <Route path="/reservation" element={<Res />} />
+        <Route path="/user" element={<EmployeeDashboard />} />
         {/* Add any other routes here */}
       </Routes>
     </Router>
+    </div>
   );
 };
 

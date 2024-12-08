@@ -142,13 +142,31 @@ async function deleteEmployee(req, res) {
 // Get all employees
 async function getAllEmployees(req, res) {
     try {
-        const employees = await User.find();  // Retrieve all users
-        res.status(200).json({ employees });  // Send the list of employees
+        // Retrieve all users from the database
+        const employees = await User.find();
+
+        // Map the employees to the desired format
+        const formattedEmployees = employees.map(employee => ({
+            _id: employee._id,
+            username: employee.username,
+            email: employee.email,
+            firstName: employee.firstName,
+            lastName: employee.lastName,
+            role: employee.role,
+            permissions: employee.permissions || [],  // Ensure permissions exist
+            contact: employee.contact.phone ? employee.contact.phone : '', // Extracting phone number from contact object
+            dietaryPreferences: employee.dietaryPreferences || [], // Default to empty array if not present
+            status: employee.status || 'ACTIVE'  // Ensure status is set
+        }));
+
+        // Send the formatted employees list in the response
+        res.status(200).json({ employees: formattedEmployees });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 }
+
 
 // Get an employee by username
 async function getEmployeeByUsername(req, res) {

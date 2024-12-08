@@ -17,6 +17,7 @@ const isDuplicateCategory = async (category, excludeId = null) => {
 // CREATE: Add a new payment method
 exports.createPaymentMethod = async (req, res) => {
     try {
+        console.log(req);
         const { category, types } = req.body;
 
         // Validate required fields

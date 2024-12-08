@@ -38,40 +38,30 @@ async function sendEmail(to, subject, text) {
     };
   }
 }
-exports.getLowStockItems = async (req, res) => {
-  console.log('Fetching low stock items...');
-  try {
-      console.log('Fetching low stock items...');
 
-      // Fetch items with quantity less than or equal to lowStockThreshold
-      const lowStockItems = await Inventory.find({
-          $expr: { $lte: ['$quantity', '$lowStockThreshold'] }
-      }).maxTimeMS(5000);  // Set a query timeout of 5 seconds
+exports.getLowStockItems = async () => {
+    try {
+        // Find items where quantity is less than or equal to the lowStockThreshold
+        const lowStockItems = await Inventory.find({ 
+            $expr: { $lte: ['$quantity', '$lowStockThreshold'] }
+        });
 
+        if (!lowStockItems.length) {
+            return [];
+        }
 
-      // If no low stock items found, return an empty array
-      if (!lowStockItems.length) {
-          return res.status(200).json({ message: 'No low stock items found', data: [] });
-      }
-
-      // Return the found low stock items
-      return res.status(200).json({ message: 'Low stock items retrieved successfully', data: lowStockItems });
-  } catch (error) {
-      console.error('Error fetching low-stock items:', error);
-      return res.status(500).json({ message: 'Error fetching low-stock items', error: error.message });
-  }
+        return lowStockItems;
+    } catch (error) {
+        throw new Error('Error fetching low-stock items: ' + error.message);
+    }
 };
+
 exports.pushLowStockAlert = async (req, res) => {
     try {
-        console.log('Fetching low stock items...');
-        
-        // Fetch low-stock items directly within this function
-        const lowStockItems = await Inventory.find({
-            $expr: { $lte: ['$quantity', '$lowStockThreshold'] }
-        }).maxTimeMS(5000); // Set a query timeout of 5 seconds
+        // Fetch low-stock items using the existing function
+        const lowStockItems = await exports.getLowStockItems();
 
-        // If no low stock items found, return a message
-        if (!lowStockItems.length) {
+        if (lowStockItems.length === 0) {
             return res.status(200).json({ message: 'No low-stock items to alert.' });
         }
 
@@ -130,14 +120,12 @@ exports.pushLowStockAlert = async (req, res) => {
             failedSents: responseMessage.failedSents
         });
     } catch (error) {
-        console.error('Error sending low-stock alerts:', error);
         res.status(500).json({ 
             message: 'Error sending low stock alerts.', 
             error: error.message 
         });
     }
 };
-
 
 
 async function watchOrders() {
@@ -166,7 +154,74 @@ async function watchOrders() {
     console.log('Watching for new orders...');
   }
 
-
+  async function watchOrders() {
+    const orderChangeStream = Order.watch();
+  
+    orderChangeStream.on('change', async (change) => {
+      if (change.operationType === 'insert') {
+        const newOrder = change.fullDocument;
+        console.log('New Order:', newOrder);
+  
+        // Fetch customer details by customer ID
+        const customer = await User.findById(newOrder.customer);
+        const staffUsers = await User.find({ role: 'STAFF' });
+        const staffEmails = staffUsers.map(user => user.email);
+  
+        // Fetch menu item names
+        const menuItems = await MenuItem.find({ '_id': { $in: newOrder.items.map(item => item.menuItem) } });
+  
+        // Fetch assigned staff name, handling the case where it might not exist
+        let assignedStaff;
+        try {
+          assignedStaff = await User.findById(newOrder.assignedStaff);
+        } catch (error) {
+          console.error('Error fetching assigned staff:', error);
+          assignedStaff = null;
+        }
+  
+        const subject = `New Order: #${newOrder._id}`;
+  
+        const message = `
+          Hello Team,
+  
+          A new order has been placed. Below are the details of the order:
+  
+          Order ID: ${newOrder._id}
+          Customer: ${customer ? customer.email : 'Unknown Customer'}
+  
+          Order Details:
+          ------------------------
+          Menu Items:
+          ${newOrder.items.map(item => {
+            const menuItem = menuItems.find(menu => menu._id.toString() === item.menuItem.toString());
+            return `- ${menuItem ? menuItem.name : 'Unknown Item'} x${item.quantity}`;
+          }).join('\n')}
+  
+          Total Price: $${newOrder.totalPrice}
+          Order Type: ${newOrder.orderType}
+          Payment Method: ${newOrder.paymentMethod}
+          Payment Status: ${newOrder.paymentStatus}
+          Status: ${newOrder.status}
+  
+          Special Requests:
+          ${newOrder.specialRequests || 'No special requests'}
+  
+          Assigned Staff: ${assignedStaff ? assignedStaff.email : 'Not Assigned'}
+  
+          Please check the order and take necessary action.
+  
+          Best regards,
+          The Inventory Management Team
+        `;
+  
+        for (const email of staffEmails) {
+          await sendEmail(email, subject, message);
+        }
+      }
+    });
+  
+    console.log('Watching for new orders...');
+  }
   
   async function watchTables() {
     const tableChangeStream = Table.watch();
@@ -238,49 +293,8 @@ async function watchOrders() {
 }
 
   
-let isWatchingOrders = false;
-let isWatchingTables = false;
-exports.controlTriggers = async (req, res) => {
-  const { watchOrders: shouldWatchOrders, watchTables: shouldWatchTables } = req.body;
 
-  // Check if both fields are provided in the request body
-  if (typeof shouldWatchOrders === 'undefined' || typeof shouldWatchTables === 'undefined') {
-      return res.status(400).json({
-          message: 'Both "watchOrders" and "watchTables" fields are required in the request body.'
-      });
+  exports.startTrigger = async () => {
+    watchOrders();
+    watchTables();
   }
-
-  try {
-      if (shouldWatchOrders && !isWatchingOrders) {
-          watchOrders();
-          isWatchingOrders = true;
-          console.log('Started watching orders.');
-      } else if (!shouldWatchOrders && isWatchingOrders) {
-          // Implement stopping orders change stream if applicable
-          isWatchingOrders = false;
-          console.log('Stopped watching orders.');
-      }
-
-      if (shouldWatchTables && !isWatchingTables) {
-          watchTables();
-          isWatchingTables = true;
-          console.log('Started watching tables.');
-      } else if (!shouldWatchTables && isWatchingTables) {
-          // Implement stopping tables change stream if applicable
-          isWatchingTables = false;
-          console.log('Stopped watching tables.');
-      }
-
-      res.status(200).json({
-          message: 'Trigger control updated successfully.',
-          orderWatching: isWatchingOrders,
-          tableWatching: isWatchingTables
-      });
-  } catch (error) {
-      console.error('Error controlling triggers:', error);
-      res.status(500).json({
-          message: 'Error controlling triggers.',
-          error: error.message
-      });
-  }
-};

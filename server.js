@@ -46,7 +46,7 @@ mongoose.connect(uri, {
   useUnifiedTopology: true
 })
 .then(() => {console.log('MongoDB connected')
- // notificationController.startTrigger();
+  notificationController.startTrigger();
 })
 .catch(err => console.error('MongoDB connection error:', err));
 

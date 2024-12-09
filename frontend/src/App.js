@@ -17,22 +17,6 @@ const App = () => {
    <div>
    <Router>
       
-      <Nav />
-      {/* Define Routes for the pages */}
-     <Routes>
-        {/* Correcting the path */}
-        <Route path="/Feedback" element={<Feedback />} />
-        <Route path="/performance" element={<Performance />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/payment-management" element={<PaymentManagement />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/chatbot" element={<Ai />} />
-        <Route path="/reservation" element={<Res />} />
-        <Route path="/user" element={<EmployeeDashboard />} />
-        {/* Add any other routes here */}
-      </Routes>
-    </Router>
- <Router>
       
       <Nav />
       {/* Define Routes for the pages */}
@@ -46,6 +30,7 @@ const App = () => {
         <Route path="/chatbot" element={<Ai />} />
         <Route path="/reservation" element={<Res />} />
         <Route path="/user" element={<EmployeeDashboard />} />
+        <Route path="/order" element={<OrdersDashboard />} />
         {/* Add any other routes here */}
       </Routes>
     </Router>

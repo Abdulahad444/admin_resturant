@@ -9,13 +9,12 @@ router.get('/', orderController.getAllOrders);
 
 // Update order status
 router.put('/updateStatus', orderController.updateOrderStatus);
-router.post('/create', orderController.createOrder);
 
 router.get('/feedback', orderController.generateCustomerFeedbackReport);
 // Report generation endpoints
-router.get('/report/sales', orderController.generateSalesReport);
-router.get('/report/employee', orderController.generateEmployeeReport);
-router.get('/report/menu-popularity', orderController.generateMenuItemPopularityReport);
+router.post('/report/sales', orderController.generateSalesReport);
+router.post('/report/employee', orderController.generateEmployeeReport);
+router.post('/report/menu-popularity', orderController.generateMenuItemPopularityReport);
 
 
 // Route for updating special instructions for a menu item in an order
